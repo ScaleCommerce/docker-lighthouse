@@ -15,7 +15,9 @@ docker buildx build --platform linux/amd64,linux/arm64 -t scalecommerce/lighthou
 ## test image locally
 ```
 docker buildx build --load -t scalecommerce/lighthouse:<tag>  .
-docker run -ti --rm -v $(pwd):/opt/reports scalecommerce/lighthouse:<tag> lighthouse https://www.google.com/
+mkdir reports
+docker run -ti --rm -v $(pwd)/reports:/opt/reports scalecommerce/lighthouse:<tag> lighthouse https://www.google.com/
+rm -rf reports/*.html
 ```
 
 ## push image to docker hub

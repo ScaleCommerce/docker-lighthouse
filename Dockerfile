@@ -4,7 +4,7 @@ ENV NODE_ENV=production \
     WORKDIR=/opt \
     PATH=/opt/:/opt/node_modules/.bin/:$PATH
 
-COPY lighthouse help.txt versions.txt $WORKDIR/
+COPY lighthouse help.txt $WORKDIR/
 
 WORKDIR $WORKDIR
 
