@@ -1,0 +1,9 @@
+Welcome! This is scalecommerce/lighthouse
+
+example commands:
+  
+  wappalyzer https://www.google.com
+
+  lighthouse --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage --disable-gpu" http://www.google.com
+
+
