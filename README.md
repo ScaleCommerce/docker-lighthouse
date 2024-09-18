@@ -24,6 +24,6 @@ docker run -ti --rm -v $(pwd):/opt/reports scalecommerce/chrome-headless lightho
 ```
 NodeJS version is v20.15.1
 npm version is 10.8.0
-Lighthouse version is 12.2.0
-Chromium 127.0.6533.99 Alpine Linux
+Lighthouse version is 12.2.1
+Chromium 128.0.6613.119 Alpine Linux
 ```
