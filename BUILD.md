@@ -1,15 +1,12 @@
 # Build image with new versions
 
+Find a matching version of lighthoise corresponding to chromium version available: (https://github.com/GoogleChrome/lighthouse/releases)[https://github.com/GoogleChrome/lighthouse/releases]
+
 ## setup buildx (if not already done)
 ```
 docker buildx create --name multiplatform-builder
 docker buildx use multiplatform-builder
 docker buildx inspect --bootstrap
-```
-
-## build multi arch image
-```
-docker buildx build --platform linux/amd64,linux/arm64 -t scalecommerce/lighthouse:<tag> .
 ```
 
 ## test image locally
@@ -20,7 +17,7 @@ docker run -ti --rm -v $(pwd)/reports:/opt/reports scalecommerce/lighthouse:<tag
 rm -rf reports/*.html
 ```
 
-## push image to docker hub
+## build for all platforms and push image to docker hub
 ```
 docker login
 docker buildx build --push --platform linux/amd64,linux/arm64 -t scalecommerce/lighthouse:<tag> .

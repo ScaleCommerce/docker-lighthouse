@@ -7,23 +7,25 @@ This image is mainly for automated testing. It provides:
 
 ## Example usage
 
+get lighthouse report as html in current directory
 ```
-# get lighthouse report as html in current directory
-docker run -ti --rm -v $(pwd):/opt/reports scalecommerce/chrome-headless lighthouse https://www.google.com/
+docker run -ti --rm -v $(pwd):/opt/reports scalecommerce/lighthouse lighthouse https://www.google.com/
+````
 
-# get lighthouse report as json on stdout
-docker run -ti --rm scalecommerce/chrome-headless lighthouse --output json --output-path stdout https://www.google.com/
+get lighthouse report as json on stdout
+```
+docker run -ti --rm scalecommerce/lighthouse lighthouse --output json --output-path stdout https://www.google.com/
+```
 
-
-# don't limit network and emulate desktop
-docker run -ti --rm -v $(pwd):/opt/reports scalecommerce/chrome-headless lighthouse https://www.google.com/ --throttling-method provided --preset desktop
-
+don't limit network and emulate desktop
+```
+docker run -ti --rm -v $(pwd):/opt/reports scalecommerce/lighthouse lighthouse https://www.google.com/ --throttling-method provided --preset desktop
 ```
 
 ## Versions
 ```
-NodeJS version is v20.15.1
-npm version is 10.8.0
-Lighthouse version is 12.2.1
-Chromium 128.0.6613.119 Alpine Linux
+NodeJS version is v22.16.0
+npm version is 11.3.0
+Lighthouse version is 12.8.0
+Chromium 138.0.7204.93 Alpine Linux
 ```

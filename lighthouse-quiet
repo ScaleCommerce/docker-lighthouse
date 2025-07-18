@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# since lighthouse 12.6.0 error messages are displeayed on stdout even with --quiet
+# to fix this, we prevent all output and force --output-path anf --output
+# then cat the result to stdout
+
+cd reports
+/opt/node_modules/.bin/lighthouse "$@" --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage --disable-gpu" --no-enable-error-reporting --output=json --output-path=result.json >/dev/null 2>&1
+exec cat result.json

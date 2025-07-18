@@ -1,30 +1,30 @@
 FROM alpine:latest
 
 ENV NODE_ENV=production \
-    WORKDIR=/opt \
-    PATH=/opt/:/opt/node_modules/.bin/:$PATH
+    LIGHTHOUSE_VERSION=12.6.1 \
+    PATH=/opt/:$PATH
 
-COPY lighthouse help.txt $WORKDIR/
+COPY lighthouse lighthouse-quiet help.txt /opt/
 
-WORKDIR $WORKDIR
+WORKDIR /opt
 
-RUN adduser -S node && \
-    mkdir $WORKDIR/reports && \
-    chown -R node:nogroup /opt && \
-    echo "PATH=/opt/:/opt/node_modules/.bin/:$PATH" >> /home/node/.profile && \
-    echo "cat $WORKDIR/help.txt" >> /home/node/.profile && \
-    echo "cat $WORKDIR/versions.txt" >> /home/node/.profile && \
-    apk add --no-cache bash chromium nodejs npm
-
-USER node
-
-RUN npm install lighthouse && \
+RUN mkdir /opt/reports && \
+    echo "PATH=/opt/:$PATH" >> /root/.profile && \
+    echo "cat /opt/help.txt" >> /root/.profile && \
+    apk update && \
+    apk add --no-cache bash chromium nodejs npm && \
+    apk cache clean && \
+    rm -rf /var/cache/apk && \
+    npm install lighthouse@"$LIGHTHOUSE_VERSION" && \
     npm prune && \
     npm cache clean --force && \
+    set -o allexport && source /etc/os-release && set +o allexport && \
+    echo $PRETTY_NAME >> versions.txt && \
     echo "NodeJS version is $(node -v)" >> versions.txt && \
     echo "npm version is $(npm -v)" >> versions.txt && \
-    echo "Lighthouse version is $(npm info lighthouse version)" >> versions.txt && \
+    echo "Lighthouse version is $(/opt/node_modules/.bin/lighthouse --version)" >> versions.txt && \
     echo $(chromium --version) >> versions.txt && \
-    echo "" >> versions.txt
+    echo "" >> versions.txt && \
+    echo "cat /opt/versions.txt" >> /root/.profile
 
 CMD ["/bin/bash", "-l"]
