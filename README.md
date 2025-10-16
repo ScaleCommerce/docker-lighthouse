@@ -28,5 +28,5 @@ Alpine Linux v3.22
 NodeJS version is v22.16.0
 npm version is 11.3.0
 Lighthouse version is 12.8.2
-Chromium 141.0.7390.76 Alpine Linux
+Chromium 141.0.7390.76
 ```
