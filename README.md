@@ -24,8 +24,9 @@ docker run -ti --rm -v $(pwd):/opt/reports scalecommerce/lighthouse lighthouse h
 
 ## Versions
 ```
+Alpine Linux v3.22
 NodeJS version is v22.16.0
 npm version is 11.3.0
-Lighthouse version is 12.8.0
-Chromium 138.0.7204.93 Alpine Linux
+Lighthouse version is 12.8.2
+Chromium 141.0.7390.76 Alpine Linux
 ```

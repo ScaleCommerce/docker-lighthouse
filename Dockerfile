@@ -1,7 +1,7 @@
 FROM alpine:latest
 
 ENV NODE_ENV=production \
-    LIGHTHOUSE_VERSION=12.6.1 \
+    LIGHTHOUSE_VERSION=12.8.2 \
     PATH=/opt/:$PATH
 
 COPY lighthouse lighthouse-quiet help.txt /opt/
