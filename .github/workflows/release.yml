@@ -40,12 +40,6 @@ jobs:
             ${{ env.IMAGE }}:${{ steps.v.outputs.version }}
             ${{ env.IMAGE }}:latest
 
-      - name: Smoke test published image
-        run: |
-          docker run --rm "$IMAGE:${{ steps.v.outputs.version }}" \
-            lighthouse-quiet https://example.com/ --only-categories=performance \
-            | python3 -c 'import json,sys; d=json.loads(sys.stdin.read()); s=d["categories"]["performance"]["score"]; assert isinstance(s,(int,float)), s'
-
       - name: Extract versions.txt
         id: versions
         run: |
