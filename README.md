@@ -11,6 +11,8 @@ This image is mainly for automated testing. It provides:
 docker pull ghcr.io/scalecommerce/docker-lighthouse:latest
 ```
 
+Browse all available tags: [github.com/ScaleCommerce/docker-lighthouse/pkgs/container/docker-lighthouse](https://github.com/ScaleCommerce/docker-lighthouse/pkgs/container/docker-lighthouse)
+
 ## Example usage
 
 get lighthouse report as html in current directory
