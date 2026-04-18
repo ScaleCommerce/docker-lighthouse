@@ -32,9 +32,9 @@ docker run -ti --rm -v $(pwd):/opt/reports ghcr.io/scalecommerce/docker-lighthou
 
 ## Versions
 ```
-Alpine Linux v3.22
-NodeJS version is v22.16.0
-npm version is 11.3.0
-Lighthouse version is 12.8.2
-Chromium 141.0.7390.76
+Alpine Linux v3.23 (3.23.4)
+NodeJS version is v24.14.1
+npm version is 11.11.0
+Lighthouse version is 13.1.0
+Chromium 147.0.7727.55 Alpine Linux
 ```
