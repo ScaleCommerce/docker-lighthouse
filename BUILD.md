@@ -1,31 +1,35 @@
-# Build image with new versions
+# Release a new version
 
-Find a matching version of lighthoise corresponding to chromium version available: (https://github.com/GoogleChrome/lighthouse/releases)[https://github.com/GoogleChrome/lighthouse/releases]
+Two steps:
 
-## setup buildx (if not already done)
-```
-docker buildx create --name multiplatform-builder
-docker buildx use multiplatform-builder
-docker buildx inspect --bootstrap
-```
+### 1. Build locally and test
 
-## test image locally
 ```
-docker buildx build --load -t scalecommerce/lighthouse:<tag>  .
-mkdir reports
-docker run -ti --rm -v $(pwd)/reports:/opt/reports scalecommerce/lighthouse:<tag> lighthouse https://www.google.com/
-rm -rf reports/*.html
+./build-local.sh
 ```
 
-## build for all platforms and push image to docker hub
+Builds the image for the host arch, reads the bundled Lighthouse version from `versions.txt` inside the image, and smoke-tests it against the URLs listed in `smoke-urls.txt` (or `smoke-urls.example.txt` if you haven't created a personal copy). Fast — only what you need to know whether a new Lighthouse version works.
+
+### 2. Release
+
 ```
-docker login
-docker buildx build --push --platform linux/amd64,linux/arm64 -t scalecommerce/lighthouse:<tag> .
-docker buildx prune
+./release.sh           # commit, tag, push — triggers CI to publish
+./release.sh --no-push # stop after commit + tag
 ```
 
-## update readme
-Replace Versions-section in READMe with the output of
+Reuses the `lighthouse-build:local` image produced in step 1. Refreshes the Versions block in `README.md`, commits `Build Version X.Y.Z`, tags `vX.Y.Z`, pushes branch + tag.
+
+The tag push triggers `.github/workflows/release.yml`, which builds multi-arch (amd64/arm64) and publishes to `ghcr.io/scalecommerce/docker-lighthouse:<version>` and `:latest`.
+
+Preconditions for `release.sh`: clean tree, on `main`, `build-local.sh` run first.
+
+## Manual multi-arch build (fallback)
+
+Only use this if CI is broken. You'll need a GitHub Personal Access Token with `write:packages`:
+
 ```
-docker run --rm -ti scalecommerce/lighthouse:<tag> cat versions.txt
+echo $GH_PAT | docker login ghcr.io -u <github-user> --password-stdin
+docker buildx create --name multiplatform-builder --use   # first time only
+docker buildx build --push --platform linux/amd64,linux/arm64 \
+  -t ghcr.io/scalecommerce/docker-lighthouse:<tag> .
 ```

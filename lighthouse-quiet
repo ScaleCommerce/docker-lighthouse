@@ -1,8 +1,17 @@
 #!/bin/bash
 
-# since lighthouse 12.6.0 error messages are displeayed on stdout even with --quiet
-# to fix this, we prevent all output and force --output-path to local file and --output to json
-# then cat the result to stdout
+# Guarantees stdout is ONLY a valid Lighthouse JSON report — nothing else.
+# Intended for programmatic callers that pipe our stdout straight into a JSON
+# parser: any stray warning/log line in the stream would corrupt the output.
+#
+# Strategy: force --output=json --output-path=<file>, silence all other output,
+# then cat the file. If lighthouse fails the file won't exist and cat exits
+# non-zero, so the caller sees a clean failure instead of partial JSON.
+#
+# Note: `lighthouse --quiet --output-path=stdout` looks like it would do the
+# same thing, but relying on the upstream CLI to never leak anything to stdout
+# has historically broken (e.g. regression in 12.6.0). This wrapper is
+# defense-in-depth; do not remove it just because --quiet looks clean today.
 
 cd reports
 /opt/node_modules/.bin/lighthouse "$@" --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage --disable-gpu" --no-enable-error-reporting --output=json --output-path=result.json >/dev/null 2>&1

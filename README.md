@@ -5,21 +5,27 @@ This image is mainly for automated testing. It provides:
 * [Chromium headless](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md)
 * [Lighthouse](https://developers.google.com/web/tools/lighthouse/)
 
+## Pull the latest image
+
+```
+docker pull ghcr.io/scalecommerce/docker-lighthouse:latest
+```
+
 ## Example usage
 
 get lighthouse report as html in current directory
 ```
-docker run -ti --rm -v $(pwd):/opt/reports scalecommerce/lighthouse lighthouse https://www.google.com/
+docker run -ti --rm -v $(pwd):/opt/reports ghcr.io/scalecommerce/docker-lighthouse lighthouse https://www.google.com/
 ````
 
-get lighthouse report as json on stdout
+get lighthouse report as json on stdout (clean JSON, safe to pipe into a parser)
 ```
-docker run -ti --rm scalecommerce/lighthouse lighthouse --output json --output-path stdout https://www.google.com/
+docker run --rm ghcr.io/scalecommerce/docker-lighthouse lighthouse-quiet https://www.google.com/
 ```
 
 don't limit network and emulate desktop
 ```
-docker run -ti --rm -v $(pwd):/opt/reports scalecommerce/lighthouse lighthouse https://www.google.com/ --throttling-method provided --preset desktop
+docker run -ti --rm -v $(pwd):/opt/reports ghcr.io/scalecommerce/docker-lighthouse lighthouse https://www.google.com/ --throttling-method provided --preset desktop
 ```
 
 ## Versions

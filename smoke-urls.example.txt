@@ -1,0 +1,13 @@
+# Smoke-test URLs for build-local.sh.
+#
+# Copy this file to `smoke-urls.txt` and edit it to taste — your personal
+# copy is gitignored so you can point it at internal/customer sites without
+# committing them. If `smoke-urls.txt` doesn't exist, build-local.sh falls
+# back to this file.
+#
+# One URL per line. Lines starting with # and blank lines are ignored.
+# A run passes when Lighthouse produces a numeric performance score for
+# every URL, so pick sites that are reliably reachable.
+https://www.google.com/
+https://example.com/
+https://github.com/
