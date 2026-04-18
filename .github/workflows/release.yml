@@ -12,7 +12,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
     steps:
       - uses: actions/checkout@v4
@@ -45,3 +45,37 @@ jobs:
           docker run --rm "$IMAGE:${{ steps.v.outputs.version }}" \
             lighthouse-quiet https://example.com/ --only-categories=performance \
             | python3 -c 'import json,sys; d=json.loads(sys.stdin.read()); s=d["categories"]["performance"]["score"]; assert isinstance(s,(int,float)), s'
+
+      - name: Extract versions.txt
+        id: versions
+        run: |
+          {
+            echo 'text<<VERSIONS_EOF'
+            docker run --rm "$IMAGE:${{ steps.v.outputs.version }}" cat versions.txt
+            echo 'VERSIONS_EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build release body
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
+          VERSIONS_TXT: ${{ steps.versions.outputs.text }}
+        run: |
+          {
+            echo '## Pull this version'
+            echo ''
+            echo '```'
+            echo "docker pull $IMAGE:$VERSION"
+            echo '```'
+            echo ''
+            echo '## Versions'
+            echo ''
+            echo '```'
+            echo "$VERSIONS_TXT"
+            echo '```'
+          } > release-body.md
+          cat release-body.md
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: release-body.md
